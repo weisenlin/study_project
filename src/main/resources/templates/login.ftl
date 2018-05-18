@@ -14,7 +14,7 @@
 
 <body class="login" mycollectionplug="bind">
 <div class="login_m">
-    <div class="login_logo"><img src="/Wopop_files/logo.png" width="196" height="46"></div>
+    <div class="login_logo"><img src="/Wopop_files/timg.jpg" width="300" ></div>
     <div class="login_boder">
         <form name="baseInfo" id="baseInfo" autocomplete="off" novalidate>
             <div class="login_padding" id="login_model">
@@ -81,8 +81,8 @@
     </div><!--login_boder end-->
 </div><!--login_m end-->
 <br> <br>
-<p align="center"> More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect
-    from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+<#--<p align="center"> More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect-->
+    <#--from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>-->
 
 
 </body>

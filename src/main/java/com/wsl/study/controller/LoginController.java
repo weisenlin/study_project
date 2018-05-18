@@ -1,6 +1,7 @@
 package com.wsl.study.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -16,5 +17,12 @@ public class LoginController {
     public String toLogin(){
 
         return "login";
+    }
+
+
+    @RequestMapping("layout.do")
+    public String layout(Model model){
+//        model.addAttribute("user","user");
+        return "layout";
     }
 }
