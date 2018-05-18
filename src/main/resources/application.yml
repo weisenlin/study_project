@@ -1,0 +1,47 @@
+#默认使用配置
+spring:
+  profiles:
+    active: dev
+
+#公共配置与profiles选择无关 mapperLocations指的路径是src/main/resources
+mybatis:
+  typeAliasesPackage: com.wsl.demo.model
+  mapperLocations: classpath:mapping/*.xml
+
+
+---
+
+#开发配置
+spring:
+  profiles: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/nst_data?useOldAliasMetadataBehavior\=true&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+  devtools:
+    restart:
+      additional-paths: src/main/java
+      enabled: true
+  #freemarker热部署配置
+  freemarker:
+    cache: false
+    template-loader-path: classpath:/templates/
+    suffix: .ftl
+    charset: utf-8
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false
+    request-context-attribute: request
+  resources:
+    static-locations: classpath:/static/
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
