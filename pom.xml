@@ -131,6 +131,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- 没有该配置，devtools 不生效 -->
+					<fork>true</fork>
+					<addResources>true</addResources>
+				</configuration>
 			</plugin>
 			<!-- mybatis generator 自动生成代码插件 -->
 			<plugin>
