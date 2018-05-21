@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <title>登录</title>
+    <#include "/common/header.ftl" >
     <link href="/Wopop_files/style_log.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/Wopop_files/style.css">
     <link rel="stylesheet" type="text/css" href="/Wopop_files/userpanel.css">
@@ -40,7 +41,7 @@
                         <label for="checkbox">Remember me</label>
                     </div>
                     <label>
-                        <input type="submit" class="sub_button" name="button" id="button" value="SIGN-IN"
+                        <input type="button" onclick="login()" class="sub_button" name="button" id="button" value="SIGN-IN"
                                style="opacity: 0.7;">
                     </label>
                 </div>
@@ -83,7 +84,21 @@
 <br> <br>
 <#--<p align="center"> More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect-->
     <#--from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>-->
-
-
 </body>
+<script type="application/javascript">
+    $(function(){
+
+    })
+    function login(){
+        var username = $("#username").val();
+        var password = $("#userpwd").val();
+        $.ajax({
+            url:"/ajaxLogin.do",
+            data:{username:username,password:password},
+            success:function(){
+
+            }
+        })
+    }
+</script>
 </html>
