@@ -1,93 +1,86 @@
 package com.wsl.study.model;
 
+import java.util.Date;
+import java.util.List;
+
 public class User {
-    private String userID;
+    private Long id;
 
-    private String userName;
+    private String nickname;
 
-    private Integer platEntID;
+    private String email;
 
-    private String loginAccount;
+    private String pswd;
 
-    private String loginPwd;
+    private Date createTime;
 
-    private String agentPersonID;
+    private Date lastLoginTime;
 
-    private String adminFlag;
+    private Long status;
 
-    private String stopFlag;
+    private List<Role> roles;
 
-    private Integer displaySeq;
-
-    public String getUserID() {
-        return userID;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID == null ? null : userID.trim();
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
     }
 
-    public Integer getPlatEntID() {
-        return platEntID;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPlatEntID(Integer platEntID) {
-        this.platEntID = platEntID;
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
     }
 
-    public String getLoginAccount() {
-        return loginAccount;
+    public String getPswd() {
+        return pswd;
     }
 
-    public void setLoginAccount(String loginAccount) {
-        this.loginAccount = loginAccount == null ? null : loginAccount.trim();
+    public void setPswd(String pswd) {
+        this.pswd = pswd == null ? null : pswd.trim();
     }
 
-    public String getLoginPwd() {
-        return loginPwd;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setLoginPwd(String loginPwd) {
-        this.loginPwd = loginPwd == null ? null : loginPwd.trim();
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getAgentPersonID() {
-        return agentPersonID;
+    public Date getLastLoginTime() {
+        return lastLoginTime;
     }
 
-    public void setAgentPersonID(String agentPersonID) {
-        this.agentPersonID = agentPersonID == null ? null : agentPersonID.trim();
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 
-    public String getAdminFlag() {
-        return adminFlag;
+    public Long getStatus() {
+        return status;
     }
 
-    public void setAdminFlag(String adminFlag) {
-        this.adminFlag = adminFlag == null ? null : adminFlag.trim();
+    public void setStatus(Long status) {
+        this.status = status;
     }
 
-    public String getStopFlag() {
-        return stopFlag;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setStopFlag(String stopFlag) {
-        this.stopFlag = stopFlag == null ? null : stopFlag.trim();
-    }
-
-    public Integer getDisplaySeq() {
-        return displaySeq;
-    }
-
-    public void setDisplaySeq(Integer displaySeq) {
-        this.displaySeq = displaySeq;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

@@ -16,7 +16,7 @@ spring:
   profiles: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/nst_data?useOldAliasMetadataBehavior\=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/study_project?useOldAliasMetadataBehavior\=true&useSSL=false
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
