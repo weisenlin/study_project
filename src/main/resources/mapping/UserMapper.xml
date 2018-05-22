@@ -142,6 +142,6 @@
     LEFT JOIN u_role_permission ON u_role_permission.rid = u_role.id
     LEFT JOIN u_permission ON u_permission.id = u_role_permission.pid
     WHERE
-	u_user.nickname = #{nickname,jdbcType=VARCHAR} and u_user.pswd=#{password,jdbcType=VARCHAR}
+	u_user.nickname = #{nickname,jdbcType=VARCHAR}
   </select>
 </mapper>

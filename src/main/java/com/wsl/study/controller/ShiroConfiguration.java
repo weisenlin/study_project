@@ -30,10 +30,9 @@ public class ShiroConfiguration {
         bean.setSuccessUrl("/layout.do");
         //配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/*.do", "authc");//表示需要认证才可以访问
-        filterChainDefinitionMap.put("/*.*", "authc");
         filterChainDefinitionMap.put("/logout*", "anon");
-        filterChainDefinitionMap.put("ajaxLogin.do","anon");
+        filterChainDefinitionMap.put("/ajaxLogin.do","anon");
+        filterChainDefinitionMap.put("/*.do", "authc");//表示需要认证才可以访问
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;
     }

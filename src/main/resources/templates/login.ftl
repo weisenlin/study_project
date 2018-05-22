@@ -96,7 +96,7 @@
             url:"/ajaxLogin.do",
             data:{username:username,password:password},
             success:function(){
-
+                window.location.href = "layout.do";
             }
         })
     }

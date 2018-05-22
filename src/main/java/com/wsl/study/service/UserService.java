@@ -9,5 +9,5 @@ import com.wsl.study.model.User;
  */
 public interface UserService {
 
-    User getUserByName(String name,String password);
+    User getUserByName(String name);
 }
