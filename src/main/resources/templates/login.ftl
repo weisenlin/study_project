@@ -3,19 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-    <title>登录</title>
+    <title>欢迎登录</title>
     <#include "/common/header.ftl" >
     <link href="/Wopop_files/style_log.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/Wopop_files/style.css">
     <link rel="stylesheet" type="text/css" href="/Wopop_files/userpanel.css">
-    <link rel="stylesheet" type="text/css" href="/Wopop_files/jquery.ui.all.css">
+    <#--<link rel="stylesheet" type="text/css" href="/Wopop_files/jquery.ui.all.css">-->
 
 </head>
 
 <body class="login" mycollectionplug="bind">
 <div class="login_m">
-    <div class="login_logo"><img src="/Wopop_files/timg.jpg" width="300" ></div>
+    <div class="login_logo"><img src="/Wopop_files/timg.jpg" width="300"></div>
     <div class="login_boder">
         <form name="baseInfo" id="baseInfo" autocomplete="off" novalidate>
             <div class="login_padding" id="login_model">
@@ -41,13 +40,14 @@
                         <label for="checkbox">Remember me</label>
                     </div>
                     <label>
-                        <input type="button" onclick="login()" class="sub_button" name="button" id="button" value="SIGN-IN"
+                        <input type="button" onclick="login()" class="sub_button" name="button" id="button"
+                               value="SIGN-IN"
                                style="opacity: 0.7;">
                     </label>
                 </div>
             </div>
         </form>
-        <#--<div class="copyrights">******* <a href="http://www.cssmoban.com/">****</a></div>-->
+    <#--<div class="copyrights">******* <a href="http://www.cssmoban.com/">****</a></div>-->
 
     <#--忘记密码-->
         <div id="forget_model" class="login_padding" style="display:none">
@@ -83,20 +83,29 @@
 </div><!--login_m end-->
 <br> <br>
 <#--<p align="center"> More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect-->
-    <#--from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>-->
+<#--from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>-->
 </body>
-<script type="application/javascript">
-    $(function(){
-
-    })
-    function login(){
+<script>
+    function login() {
         var username = $("#username").val();
         var password = $("#userpwd").val();
         $.ajax({
-            url:"/ajaxLogin.do",
-            data:{username:username,password:password},
-            success:function(){
-                window.location.href = "layout.do";
+            url: "/ajaxLogin.do",
+            data: {username: username, password: password},
+            success: function (result) {
+//                console.log(result);
+                if (result.status == 200) {
+                    window.location.href = "layout.do";
+                } else {
+                    $.messager.alert('登录失败', '用户名或密码不正确', "error", function () {
+                        $("#username").focus();
+                        $("#username").select();
+                    });
+                }
+
+            },
+            error: function () {
+//                $.messager.alert('Warning','The warning message');
             }
         })
     }

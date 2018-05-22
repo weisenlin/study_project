@@ -40,7 +40,12 @@ public class LoginController {
                 username,
                 password);
         //进行验证，这里可以捕获异常，然后返回对应信息
-        subject.login(usernamePasswordToken);
+        try{
+            subject.login(usernamePasswordToken);
+        }
+        catch (Exception e){
+            return new JsonResult(401,"用户名或密码不正确",null);
+        }
         return JsonResult.build(200,"ok",null);
     }
 }
