@@ -31,6 +31,12 @@ public class LoginController {
         return "layout";
     }
 
+    @RequestMapping("layout_2.do")
+    public String layout2(Model model){
+//        model.addAttribute("user","user");
+        return "layout_2";
+    }
+
     @RequestMapping("ajaxLogin.do")
     @ResponseBody
     public JsonResult login(String username,String password){
