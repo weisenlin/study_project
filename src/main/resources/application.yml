@@ -39,11 +39,6 @@ spring:
     request-context-attribute: request
   resources:
     static-locations: classpath:/static/
-    #不知道是配置什么的
-  http:
-      encoding:
-        charset: utf-8
-        enabled: true
 
 pagehelper:
   helper-dialect: mysql
