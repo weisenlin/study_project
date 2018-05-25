@@ -24,4 +24,15 @@ public class ProjectServiceImpl implements ProjectService {
     public List<Project> selectAll() {
         return projectMapper.selectAll();
     }
+
+    @Override
+    public void tsetService() {
+//        测试事务
+        Project project = new Project();
+        project.setName("test");
+        projectMapper.insert(project);
+        project.setName("test2");
+        projectMapper.insert(project);
+//        int i = 1/0;
+    }
 }

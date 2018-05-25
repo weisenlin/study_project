@@ -32,4 +32,11 @@ public class ProjectController {
 
         return projectService.selectAll();
     }
+
+    @RequestMapping("test")
+    @ResponseBody
+    public String test(){
+        projectService.tsetService();
+        return "";
+    }
 }
