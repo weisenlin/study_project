@@ -1,7 +1,9 @@
 package com.wsl.study.service.impl;
 
 import com.wsl.study.mapper.ProjectMapper;
+import com.wsl.study.mapper.UserMapper;
 import com.wsl.study.model.Project;
+import com.wsl.study.model.User;
 import com.wsl.study.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectMapper projectMapper;
+    @Autowired
+    private UserMapper userMapper;
     @Override
     public List<Project> selectAll() {
         return projectMapper.selectAll();
@@ -31,8 +35,9 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project();
         project.setName("test");
         projectMapper.insert(project);
-        project.setName("test2");
-        projectMapper.insert(project);
+        User user = new User();
+        user.setNickname("nick");
+        userMapper.insert(user);
 //        int i = 1/0;
     }
 }

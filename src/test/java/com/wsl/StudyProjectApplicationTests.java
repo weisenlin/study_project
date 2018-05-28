@@ -1,6 +1,6 @@
 package com.wsl;
 
-import com.wsl.study.model.User;
+import com.wsl.study.service.ProjectService;
 import com.wsl.study.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class StudyProjectApplicationTests {
 	@Autowired
 	private UserService userSerivce;
+	@Autowired
+	private ProjectService projectService;
 
 	@Test
 	public void contextLoads() {
@@ -24,7 +26,7 @@ public class StudyProjectApplicationTests {
 	public void testServcie(){
 //		User user = userSerivce.login("activi","123456");
 //		System.out.println(user.getUserName());
-		User user = userSerivce.getUserByName("admin");
-
+//		User user = userSerivce.getUserByName("admin");
+		projectService.tsetService();
 	}
 }
