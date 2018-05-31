@@ -17,4 +17,10 @@ public class UserController {
 
         return "/user/index";
     }
+
+    @RequestMapping("/index_2.do")
+    public String index_2(){
+
+        return "/user/index_2";
+    }
 }
