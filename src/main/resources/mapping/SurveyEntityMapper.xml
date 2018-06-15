@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wsl.study.mapper.SurveyEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.wsl.study.model.SurveyEntity" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="template" property="template" jdbcType="VARCHAR" />
+    <result column="subTitle" property="subtitle" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="startDate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="endDate" property="enddate" jdbcType="TIMESTAMP" />
+    <result column="postBack" property="postback" jdbcType="INTEGER" />
+    <result column="weight" property="weight" jdbcType="INTEGER" />
+    <result column="validate" property="validate" jdbcType="INTEGER" />
+    <result column="endNote" property="endnote" jdbcType="VARCHAR" />
+    <result column="endAction" property="endaction" jdbcType="VARCHAR" />
+    <result column="endActionName" property="endactionname" jdbcType="VARCHAR" />
+    <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, template, subTitle, note, startDate, endDate, postBack, weight, validate, 
+    endNote, endAction, endActionName, period, describe
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from surveyentity
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from surveyentity
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wsl.study.model.SurveyEntity" >
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select UUID()
+    </selectKey>
+    insert into surveyentity (id, title, template, 
+      subTitle, note, startDate, 
+      endDate, postBack, weight, 
+      validate, endNote, endAction, 
+      endActionName, period, describe
+      )
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{template,jdbcType=VARCHAR}, 
+      #{subtitle,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{startdate,jdbcType=TIMESTAMP}, 
+      #{enddate,jdbcType=TIMESTAMP}, #{postback,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, 
+      #{validate,jdbcType=INTEGER}, #{endnote,jdbcType=VARCHAR}, #{endaction,jdbcType=VARCHAR}, 
+      #{endactionname,jdbcType=VARCHAR}, #{period,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wsl.study.model.SurveyEntity" >
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select UUID()
+    </selectKey>
+    insert into surveyentity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="template != null" >
+        template,
+      </if>
+      <if test="subtitle != null" >
+        subTitle,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="startdate != null" >
+        startDate,
+      </if>
+      <if test="enddate != null" >
+        endDate,
+      </if>
+      <if test="postback != null" >
+        postBack,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="validate != null" >
+        validate,
+      </if>
+      <if test="endnote != null" >
+        endNote,
+      </if>
+      <if test="endaction != null" >
+        endAction,
+      </if>
+      <if test="endactionname != null" >
+        endActionName,
+      </if>
+      <if test="period != null" >
+        period,
+      </if>
+      <if test="describe != null" >
+        describe,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="template != null" >
+        #{template,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postback != null" >
+        #{postback,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="validate != null" >
+        #{validate,jdbcType=INTEGER},
+      </if>
+      <if test="endnote != null" >
+        #{endnote,jdbcType=VARCHAR},
+      </if>
+      <if test="endaction != null" >
+        #{endaction,jdbcType=VARCHAR},
+      </if>
+      <if test="endactionname != null" >
+        #{endactionname,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wsl.study.model.SurveyEntity" >
+    update surveyentity
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="template != null" >
+        template = #{template,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        subTitle = #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        startDate = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null" >
+        endDate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postback != null" >
+        postBack = #{postback,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="validate != null" >
+        validate = #{validate,jdbcType=INTEGER},
+      </if>
+      <if test="endnote != null" >
+        endNote = #{endnote,jdbcType=VARCHAR},
+      </if>
+      <if test="endaction != null" >
+        endAction = #{endaction,jdbcType=VARCHAR},
+      </if>
+      <if test="endactionname != null" >
+        endActionName = #{endactionname,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        period = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null" >
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wsl.study.model.SurveyEntity" >
+    update surveyentity
+    set title = #{title,jdbcType=VARCHAR},
+      template = #{template,jdbcType=VARCHAR},
+      subTitle = #{subtitle,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      startDate = #{startdate,jdbcType=TIMESTAMP},
+      endDate = #{enddate,jdbcType=TIMESTAMP},
+      postBack = #{postback,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=INTEGER},
+      validate = #{validate,jdbcType=INTEGER},
+      endNote = #{endnote,jdbcType=VARCHAR},
+      endAction = #{endaction,jdbcType=VARCHAR},
+      endActionName = #{endactionname,jdbcType=VARCHAR},
+      period = #{period,jdbcType=INTEGER},
+      describe = #{describe,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

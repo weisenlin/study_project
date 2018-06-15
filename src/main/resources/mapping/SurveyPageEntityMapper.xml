@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wsl.study.mapper.SurveyPageEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.wsl.study.model.SurveyPageEntity" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="surId" property="surid" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="index" property="index" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, surId, title, index
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from surveypageentity
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from surveypageentity
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wsl.study.model.SurveyPageEntity" >
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select UUID()
+    </selectKey>
+    insert into surveypageentity (id, surId, title, 
+      index)
+    values (#{id,jdbcType=VARCHAR}, #{surid,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{index,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wsl.study.model.SurveyPageEntity" >
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select UUID()
+    </selectKey>
+    insert into surveypageentity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="surid != null" >
+        surId,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="index != null" >
+        index,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="surid != null" >
+        #{surid,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null" >
+        #{index,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wsl.study.model.SurveyPageEntity" >
+    update surveypageentity
+    <set >
+      <if test="surid != null" >
+        surId = #{surid,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null" >
+        index = #{index,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wsl.study.model.SurveyPageEntity" >
+    update surveypageentity
+    set surId = #{surid,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      index = #{index,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

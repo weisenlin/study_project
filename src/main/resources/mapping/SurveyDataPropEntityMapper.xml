@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wsl.study.mapper.SurveyDataPropEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.wsl.study.model.SurveyDataPropEntity" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="surDataId" property="surdataid" jdbcType="VARCHAR" />
+    <result column="questionId" property="questionid" jdbcType="VARCHAR" />
+    <result column="propValue" property="propvalue" jdbcType="VARCHAR" />
+    <result column="rowNumber" property="rownumber" jdbcType="INTEGER" />
+    <result column="propId" property="propid" jdbcType="VARCHAR" />
+    <result column="propName" property="propname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, surDataId, questionId, propValue, rowNumber, propId, propName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from surveydatapropentity
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from surveydatapropentity
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wsl.study.model.SurveyDataPropEntity" >
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select UUID()
+    </selectKey>
+    insert into surveydatapropentity (id, surDataId, questionId, 
+      propValue, rowNumber, propId, 
+      propName)
+    values (#{id,jdbcType=VARCHAR}, #{surdataid,jdbcType=VARCHAR}, #{questionid,jdbcType=VARCHAR}, 
+      #{propvalue,jdbcType=VARCHAR}, #{rownumber,jdbcType=INTEGER}, #{propid,jdbcType=VARCHAR}, 
+      #{propname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wsl.study.model.SurveyDataPropEntity" >
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select UUID()
+    </selectKey>
+    insert into surveydatapropentity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="surdataid != null" >
+        surDataId,
+      </if>
+      <if test="questionid != null" >
+        questionId,
+      </if>
+      <if test="propvalue != null" >
+        propValue,
+      </if>
+      <if test="rownumber != null" >
+        rowNumber,
+      </if>
+      <if test="propid != null" >
+        propId,
+      </if>
+      <if test="propname != null" >
+        propName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="surdataid != null" >
+        #{surdataid,jdbcType=VARCHAR},
+      </if>
+      <if test="questionid != null" >
+        #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="propvalue != null" >
+        #{propvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="rownumber != null" >
+        #{rownumber,jdbcType=INTEGER},
+      </if>
+      <if test="propid != null" >
+        #{propid,jdbcType=VARCHAR},
+      </if>
+      <if test="propname != null" >
+        #{propname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wsl.study.model.SurveyDataPropEntity" >
+    update surveydatapropentity
+    <set >
+      <if test="surdataid != null" >
+        surDataId = #{surdataid,jdbcType=VARCHAR},
+      </if>
+      <if test="questionid != null" >
+        questionId = #{questionid,jdbcType=VARCHAR},
+      </if>
+      <if test="propvalue != null" >
+        propValue = #{propvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="rownumber != null" >
+        rowNumber = #{rownumber,jdbcType=INTEGER},
+      </if>
+      <if test="propid != null" >
+        propId = #{propid,jdbcType=VARCHAR},
+      </if>
+      <if test="propname != null" >
+        propName = #{propname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wsl.study.model.SurveyDataPropEntity" >
+    update surveydatapropentity
+    set surDataId = #{surdataid,jdbcType=VARCHAR},
+      questionId = #{questionid,jdbcType=VARCHAR},
+      propValue = #{propvalue,jdbcType=VARCHAR},
+      rowNumber = #{rownumber,jdbcType=INTEGER},
+      propId = #{propid,jdbcType=VARCHAR},
+      propName = #{propname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -145,10 +145,20 @@
 
 <!-- </div> -->
 <div id="MainPage" data-options="region:'center',title:''">
-    <div id="tabs" class="easyui-tabs">
-        <div title="首页" style="padding:20px;"></div>
+    <div id="tabs" class="easyui-tabs" style="width:100%;height:98%;">
+        <div title="首页" style="padding:20px;width:100%;height: 100%;"></div>
+        <div title="Tab1" style="padding:20px;display:none;">
+            tab1
+        </div>
+        <div title="Tab2" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
+            tab2
+        </div>
+        <div title="Tab3" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;display:none;">
+            tab3
+        </div>
     </div>
 </div>
+
 
 <script type="text/javascript">
 
