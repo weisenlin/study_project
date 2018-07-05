@@ -213,7 +213,7 @@
             </tr>
             <tr>
                 <td>邮箱：</td>
-                <td><input type="text" id="email" name="email" class="easyui-validatebox" validType='email' required="true"
+                <td><input type="text" id="email" name="email" class="easyui-validatebox"
                            data-options="missingMessage:'请输入邮箱'" style="width: 250px"/></td>
             </tr>
         </table>

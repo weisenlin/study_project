@@ -29,8 +29,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> findAll(Integer page,Integer rows,String userName) {
-        PageHelper.startPage(page,rows);
-        return userMapper.findAll(userName);
+        PageHelper.startPage(page,rows,false);
+        List<User> list = userMapper.findAllForPage(userName);
+        return list;
     }
 
     @Override
@@ -41,5 +42,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public int save(User user) {
         return userMapper.insertSelective(user);
+    }
+
+    @Override
+    public int update(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public int delete(Long id) {
+        return userMapper.deleteByPrimaryKey(id);
     }
 }

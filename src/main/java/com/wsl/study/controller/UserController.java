@@ -1,6 +1,8 @@
 package com.wsl.study.controller;
 
+import com.wsl.study.model.Role;
 import com.wsl.study.model.User;
+import com.wsl.study.service.RoleService;
 import com.wsl.study.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,9 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private RoleService roleService;
+
     @RequestMapping("index.do")
     public String index(){
 
@@ -40,6 +45,10 @@ public class UserController {
     public Map<String,Object> list(Integer page, Integer rows,String userName){
         Map<String,Object> map = new HashMap<>();
         List<User> list = userService.findAll(page,rows,userName);
+        for(User user:list){
+            List<Role> roles = roleService.findRoleForUser(user.getId());
+            user.setRoles(roles);
+        }
         int count = userService.findCount();
         map.put("rows",list);
         map.put("total",count);
@@ -51,6 +60,26 @@ public class UserController {
     public Map<String,Object> save(User user){
         Map<String,Object> map = new HashMap<>();
         userService.save(user);
+        map.put("success",true);
+        return map;
+    }
+
+
+    @RequestMapping("/update.do")
+    @ResponseBody
+    public Map<String,Object> update(User user){
+        Map<String,Object> map = new HashMap<>();
+        userService.update(user);
+        map.put("success",true);
+        return map;
+    }
+
+
+    @RequestMapping("/delete.do")
+    @ResponseBody
+    public Map<String,Object> delete(Long id){
+        Map<String,Object> map = new HashMap<>();
+        userService.delete(id);
         map.put("success",true);
         return map;
     }

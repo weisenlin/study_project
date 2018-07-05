@@ -158,6 +158,19 @@
       where u_user.nickname like '%${userName}%'
     </if>
   </select>
+
+
+  <select id="findAllForPage" resultMap="BaseResultMap">
+    SELECT
+    u_user.*
+    FROM
+    u_user
+    <if test="userName !=null">
+      where u_user.nickname like '%${userName}%'
+    </if>
+  </select>
+
+
   <select id="findCount" resultType="int">
     SELECT
     count(*)

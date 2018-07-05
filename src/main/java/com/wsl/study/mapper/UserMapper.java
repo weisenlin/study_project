@@ -23,4 +23,6 @@ public interface UserMapper {
     List<User> findAll(@Param("userName")String userName);
 
     int findCount();
+
+    List<User> findAllForPage(@Param("userName")String userName);
 }
