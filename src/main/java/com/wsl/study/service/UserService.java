@@ -13,7 +13,9 @@ public interface UserService {
 
     User getUserByName(String name);
 
-    List<User> findAll(Integer page,Integer rows);
+    List<User> findAll(Integer page,Integer rows,String userName);
 
     int findCount();
+
+    int save(User user);
 }

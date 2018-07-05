@@ -12,7 +12,21 @@
         var url;
 
         function formatEdit(val, row) {
-            return "<a href=\"javascript:openRoleChooseDialog('" + row.roles + "'," + row.id + ")\"><img style='margin-top: 4px' src='/static/images/edit.gif' /></a>";
+            return "<a href=\"javascript:openRoleChooseDialog('" + row.roles + "'," + row.id + ")\"><img style='margin-top: 4px' src='/easy_ui/images/edit.gif' /></a>";
+        }
+
+        function formatRole(val,row){
+            console.log(row);
+            var roles = row.roles;
+            if(!roles){
+                return "";
+            }
+            var role = "";
+            for(var i=0;i<roles.length;i++){
+                role = role + roles[i].name + ",";
+            }
+            role = role.substring(0,role.length-1);
+            return role;
         }
 
         function openRoleChooseDialog(roles, userId) {
@@ -65,7 +79,7 @@
             var id = selectedRows[0].id;
             $.messager.confirm("系统提示", "您确定要删除这条数据吗？", function (r) {
                 if (r) {
-                    $.post("/admin/user/delete", {id: id}, function (result) {
+                    $.post("/user/delete.do", {id: id}, function (result) {
                         if (result.success) {
                             $.messager.alert("系统提示", "数据已成功删除！");
                             $("#dg").datagrid("reload");
@@ -80,7 +94,7 @@
 
         function openUserAddDialog() {
             $("#dlg").dialog("open").dialog("setTitle", "添加用户信息");
-            url = "/admin/user/save";
+            url = "/user/save.do";
         }
 
         function openUserModifyDialog() {
@@ -93,7 +107,7 @@
             $("#dlg").dialog("open").dialog("setTitle", "修改用户信息");
             $("#fm").form("load", row);
             $("#userName").attr("readonly", "readonly")
-            url = "/admin/user/save?id=" + row.id;
+            url = "/user/update.do?id=" + row.id;
         }
 
 
@@ -119,10 +133,9 @@
 
 
         function resetValue() {
-            $("#userName").val("");
-            $("#password").val("");
-            $("#trueName").val("");
-            $("#remarks").val("");
+            $("#nickname").val("");
+            $("#pswd").val("");
+            $("#eamil").val("");
         }
 
         function closeUserDialog() {
@@ -144,8 +157,8 @@
                 onDblClickRow: function (index, row) {
                     $("#dlg").dialog("open").dialog("setTitle", "修改用户信息");
                     $("#fm").form("load", row);
-                    $("#userName").attr("readonly", "readonly")
-                    url = "/admin/user/save?id=" + row.id;
+                    $("#nickname").attr("readonly", "readonly")
+                    url = "/user/udpate.do?id=" + row.id;
                 },
                 onLoadSuccess: function (data) {
                     console.log(data);
@@ -164,8 +177,8 @@
         <th field="id" width="20" align="center">编号</th>
         <th field="nickname" width="50" align="center">用户名</th>
         <th field="pswd" width="50" align="center">密码</th>
-        <th field="remarks" width="80" align="center">备注</th>
-        <th field="roles" width="150" align="center">拥有角色</th>
+        <th field="email" width="80" align="center">邮箱</th>
+        <th field="roles" width="150" align="center" formatter="formatRole">拥有角色</th>
         <th field="aa" width="50" align="center" formatter="formatEdit">角色设置</th>
     </tr>
     </thead>
@@ -190,24 +203,18 @@
         <table cellspacing="8px">
             <tr>
                 <td>用户名：</td>
-                <td><input type="text" id="userName" name="userName" class="easyui-validatebox" required="true"
+                <td><input type="text" id="nickname" name="nickname" class="easyui-validatebox" required="true"
                            data-options="missingMessage:'请输入用户名'"/></td>
             </tr>
             <tr>
                 <td>密码：</td>
-                <td><input type="text" id="password" name="password" class="easyui-validatebox" required="true"
+                <td><input type="text" id="pswd" name="pswd" class="easyui-validatebox" required="true"
                            data-options="missingMessage:'请输入密码'" style="width: 250px"/></td>
             </tr>
             <tr>
-                <td>真是姓名：</td>
-                <td><input type="text" id="trueName" name="trueName" class="easyui-validatebox" required="true"
-                           data-options="missingMessage:'请输入真实姓名'" style="width: 250px"/></td>
-            </tr>
-            <tr>
-                <td valign="top">备注：</td>
-                <td>
-                    <textarea rows="5" cols="40" id="remarks" name="remarks"></textarea>
-                </td>
+                <td>邮箱：</td>
+                <td><input type="text" id="email" name="email" class="easyui-validatebox" validType='email' required="true"
+                           data-options="missingMessage:'请输入邮箱'" style="width: 250px"/></td>
             </tr>
         </table>
     </form>

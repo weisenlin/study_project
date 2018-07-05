@@ -37,12 +37,21 @@ public class UserController {
 
     @RequestMapping("/list.do")
     @ResponseBody
-    public Map<String,Object> list(Integer page, Integer rows){
+    public Map<String,Object> list(Integer page, Integer rows,String userName){
         Map<String,Object> map = new HashMap<>();
-        List<User> list = userService.findAll(page,rows);
+        List<User> list = userService.findAll(page,rows,userName);
         int count = userService.findCount();
         map.put("rows",list);
         map.put("total",count);
+        return map;
+    }
+
+    @RequestMapping("/save.do")
+    @ResponseBody
+    public Map<String,Object> save(User user){
+        Map<String,Object> map = new HashMap<>();
+        userService.save(user);
+        map.put("success",true);
         return map;
     }
 }

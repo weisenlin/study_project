@@ -20,7 +20,7 @@ public interface UserMapper {
 
     User getUserByName(@Param("nickname")String name);
 
-    List<User> findAll();
+    List<User> findAll(@Param("userName")String userName);
 
     int findCount();
 }

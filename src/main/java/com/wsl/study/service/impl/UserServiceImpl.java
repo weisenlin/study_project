@@ -28,13 +28,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> findAll(Integer page,Integer rows) {
+    public List<User> findAll(Integer page,Integer rows,String userName) {
         PageHelper.startPage(page,rows);
-        return userMapper.findAll();
+        return userMapper.findAll(userName);
     }
 
     @Override
     public int findCount() {
         return userMapper.findCount();
+    }
+
+    @Override
+    public int save(User user) {
+        return userMapper.insertSelective(user);
     }
 }

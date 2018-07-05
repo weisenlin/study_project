@@ -19,11 +19,11 @@
     <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="BIGINT" />
     <collection property="roles" ofType="com.wsl.study.model.Role">
-      <result column="id" property="id"/>
-      <result column="name" property="name"/>
+      <result column="r_id" property="id"/>
+      <result column="r_name" property="name"/>
       <collection property="permissions" ofType="com.wsl.study.model.Permission">
-        <result column="id" property="id"/>
-        <result column="name" property="name"/>
+        <result column="p_id" property="id"/>
+        <result column="p_name" property="name"/>
       </collection>
     </collection>
   </resultMap>
@@ -134,7 +134,7 @@
   
   <select id="getUserByName" resultMap="shiroMap">
     SELECT
-	u_user.*, u_role.*, u_permission.*
+	u_user.*, u_role.id as r_id,u_role.name as r_name, u_permission.id as p_id ,u_permission.name as p_name
     FROM
         u_user
     LEFT JOIN u_user_role ON u_user_role.uid = u_user.id
@@ -147,13 +147,16 @@
 
   <select id="findAll" resultMap="shiroMap">
     SELECT
-    u_user.*, u_role.*, u_permission.*
+    u_user.*, u_role.id as r_id,u_role.name as r_name, u_permission.id as p_id ,u_permission.name as p_name
     FROM
     u_user
     LEFT JOIN u_user_role ON u_user_role.uid = u_user.id
     LEFT JOIN u_role ON u_role.id = u_user_role.rid
     LEFT JOIN u_role_permission ON u_role_permission.rid = u_role.id
     LEFT JOIN u_permission ON u_permission.id = u_role_permission.pid
+    <if test="userName !=null">
+      where u_user.nickname like '%${userName}%'
+    </if>
   </select>
   <select id="findCount" resultType="int">
     SELECT
