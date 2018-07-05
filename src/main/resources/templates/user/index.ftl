@@ -13,7 +13,7 @@
 
         function formatEdit(val, row) {
             var roles = row.roles;
-            var ids = []
+            var ids = [];
             for (var i = 0; i < roles.length; i++) {
                     ids.push(roles[i].id);
             }

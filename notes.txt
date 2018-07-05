@@ -66,4 +66,73 @@ spring mvc学习笔记：
 
                       总结：前端需要是post请求，contentType需要设置为application/json json对象数组需要通过JSON.stringify()方法处理
                       前端需要通过@RequestBody注解接收参数并封装到对象中
+
+
+                需求：保存数据，统一保存（一个表单，多个表格数据，每个表格数据在前端存储为json对象的集合）
+                    后台正常接收
+                    前端处理参数
+
+                    前端代码：
+                    //对象处理方法  ps：item[0].id=&item[0].name=&item[1].name&item[1].id
+                                var serializeList = function (name, list, prefix) {
+                                    prefix = prefix || "";
+                                    var str = "";
+                                    for (var i = 0; i < list.length; i++) {
+                                        var dl = list[i];
+                                        for (var key in dl) {
+                                            //处理百分号
+                                            var value = dl[key];
+                                            str += ("&" + prefix + name + "[" + i + "]." + key + "=" + (value || ""));
+                                        }
+                                    }
+                                    return str;
+                                };
+                    //表单处理
+                                   var formDecHeadPart1 = $("#chargeBillForm");
+                                   var findPart1Input = formDecHeadPart1.find("input,select,textarea");
+                                   var data = ""
+                                   findPart1Input.each(function () {
+                                       var $this = $(this);
+                                       var name = $this.attr("name");
+                                       if (!name) {
+                                           return;
+                                       }
+                                       var prop = $this.prop("checked");
+                                       if ((($this.attr("type") === "checkbox") || ($this.attr("type") === "radio")) && !$this.prop("checked")) {
+                                           return;
+                                       }
+                                       var value = $this.val();
+                                       data += ((data ? "&" : "") + name + "=" + value);//拼装请求参数
+                                   });
+                                       var feeItemLists = feeItemList.freeItemData;//列表数据
+                                        if (feeItemLists && feeItemLists.length > 0) {
+                                            data += serializeList("feeAccostItem", feeItemLists);//调用列表数据处理方法拼装数据
+                                        }
+                                    //发起请求传递参数到后台
+                                    $.ajax({
+                                        url: ctx + "/fee/charge/save.do",
+                                        type: "post",
+                                        data: data,
+                                        cache: false,
+                                        success: function (result) {
+                                            if(result.code==403){
+                                                popup().error(result.message);
+                                                return;
+                                            }
+                                            popup().info("保存成功");
+                                            setTimeout(function () {
+                                                window.location.href = "${ctx}/fee/charge/edit/toAdd.do?platBillNo=" + result.data;
+                                            }, 1000)
+                                        },
+                                        error: function () {
+                                            $.hideLoading();
+                                            popup().error("保存数据失败");
+                                        }
+                                     })
+                                     //后端代码
+                                     @ResponseBody
+                                         @RequestMapping(value = "/save.do", method = RequestMethod.POST)
+                                         public Result save(Fee_Accost_Head fee_accost_head)
+                                     对象中存在列表的参数属性  private List<Fee_Accost_Item> feeAccostItem = new ArrayList<>();
+                                     属性名称与前端json对象的名称相符
 //===============================================================================================================================
