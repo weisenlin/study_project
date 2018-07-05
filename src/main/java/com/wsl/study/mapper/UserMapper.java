@@ -3,6 +3,8 @@ package com.wsl.study.mapper;
 import com.wsl.study.model.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -17,4 +19,8 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User getUserByName(@Param("nickname")String name);
+
+    List<User> findAll();
+
+    int findCount();
 }

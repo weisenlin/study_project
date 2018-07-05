@@ -1,7 +1,15 @@
 package com.wsl.study.controller;
 
+import com.wsl.study.model.User;
+import com.wsl.study.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 名称:
@@ -11,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    @Resource
+    private UserService userService;
 
     @RequestMapping("index.do")
     public String index(){
@@ -22,5 +33,16 @@ public class UserController {
     public String index_2(){
 
         return "/user/index_2";
+    }
+
+    @RequestMapping("/list.do")
+    @ResponseBody
+    public Map<String,Object> list(Integer page, Integer rows){
+        Map<String,Object> map = new HashMap<>();
+        List<User> list = userService.findAll(page,rows);
+        int count = userService.findCount();
+        map.put("rows",list);
+        map.put("total",count);
+        return map;
     }
 }

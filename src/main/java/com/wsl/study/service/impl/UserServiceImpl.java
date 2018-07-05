@@ -1,5 +1,6 @@
 package com.wsl.study.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wsl.study.mapper.UserMapper;
 import com.wsl.study.model.User;
 import com.wsl.study.service.UserService;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 名称:
@@ -23,5 +25,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserByName(String name) {
         return userMapper.getUserByName(name);
+    }
+
+    @Override
+    public List<User> findAll(Integer page,Integer rows) {
+        PageHelper.startPage(page,rows);
+        return userMapper.findAll();
+    }
+
+    @Override
+    public int findCount() {
+        return userMapper.findCount();
     }
 }

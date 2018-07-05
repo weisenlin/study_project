@@ -31,8 +31,8 @@ public class StudyProjectApplicationTests {
 	public void testServcie(){
 //		User user = userSerivce.login("activi","123456");
 //		System.out.println(user.getUserName());
-//		User user = userSerivce.getUserByName("admin");
-		projectService.tsetService();
+		Integer user = userSerivce.findCount();
+//		projectService.tsetService();
 	}
 
 	@Test

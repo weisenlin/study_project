@@ -144,4 +144,21 @@
     WHERE
 	u_user.nickname = #{nickname,jdbcType=VARCHAR}
   </select>
+
+  <select id="findAll" resultMap="shiroMap">
+    SELECT
+    u_user.*, u_role.*, u_permission.*
+    FROM
+    u_user
+    LEFT JOIN u_user_role ON u_user_role.uid = u_user.id
+    LEFT JOIN u_role ON u_role.id = u_user_role.rid
+    LEFT JOIN u_role_permission ON u_role_permission.rid = u_role.id
+    LEFT JOIN u_permission ON u_permission.id = u_role_permission.pid
+  </select>
+  <select id="findCount" resultType="int">
+    SELECT
+    count(*)
+    FROM
+    u_user
+  </select>
 </mapper>

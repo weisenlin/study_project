@@ -2,6 +2,8 @@ package com.wsl.study.service;
 
 import com.wsl.study.model.User;
 
+import java.util.List;
+
 /**
  * 名称:
  * 用途：
@@ -10,4 +12,8 @@ import com.wsl.study.model.User;
 public interface UserService {
 
     User getUserByName(String name);
+
+    List<User> findAll(Integer page,Integer rows);
+
+    int findCount();
 }
