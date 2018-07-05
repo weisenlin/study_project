@@ -1,5 +1,6 @@
 package com.wsl.study.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.wsl.study.model.Role;
 import com.wsl.study.model.User;
 import com.wsl.study.service.RoleService;
@@ -105,8 +106,10 @@ public class UserController {
 
     @RequestMapping("/test.do")
     @ResponseBody
-    public Map<String, Object> test(@RequestBody List<User> user) {
+    public Map<String, Object> test(@RequestBody Map<String,Object> models) {
         Map<String, Object> map = new HashMap<>();
+        Role role = JSON.parseObject(models.get("role").toString(),Role.class);
+        List<User> user = JSON.parseArray(models.get("user").toString(),User.class);
         map.put("success",true);
         return map;
     }

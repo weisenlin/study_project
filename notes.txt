@@ -135,4 +135,51 @@ spring mvc学习笔记：
                                          public Result save(Fee_Accost_Head fee_accost_head)
                                      对象中存在列表的参数属性  private List<Fee_Accost_Item> feeAccostItem = new ArrayList<>();
                                      属性名称与前端json对象的名称相符
+
+
+
+
+
+                          多个json对象
+                                前端代码
+                                <script>
+                                    var user = [{
+                                        'id':1,
+                                        'name':'admin'
+                                    },{
+                                        'id':2,
+                                        'name':'admin2'
+                                    }];
+                                    var role = {
+                                        'id':1,
+                                        'name':'name1'
+                                    };
+                                    var para = {
+                                        'user':JSON.stringify(user),
+                                        'role':JSON.stringify(role)
+                                    }
+                                    $.ajax({
+                                        type:'post',
+                                        url:'/user/test.do',
+                                        data:JSON.stringify(para),
+                                        dataType:'json',
+                                        contentType:'application/json',
+                                        success:function(){
+                                            alert("success");
+                                        }
+                                    })
+                                </script>
+                                提交了Role对象以及User对象的集合
+                                后端通过map接收json数据
+                                后端代码
+                                    @RequestMapping("/test.do")
+                                    @ResponseBody
+                                    public Map<String, Object> test(@RequestBody Map<String,Object> models) {
+                                        Map<String, Object> map = new HashMap<>();
+                                        Role role = JSON.parseObject(models.get("role").toString(),Role.class);
+                                        List<User> user = JSON.parseArray(models.get("user").toString(),User.class);
+                                        map.put("success",true);
+                                        return map;
+                                    }
+                                    通过JSON（com.alibaba.fastjson）转换json对象获取参数
 //===============================================================================================================================

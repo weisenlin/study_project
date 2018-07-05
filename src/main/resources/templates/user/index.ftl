@@ -273,5 +273,32 @@
     <a href="javascript:saveRoleSet()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
     <a href="javascript:closeRoleSetDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
+<script>
+    var user = [{
+        'id':1,
+        'name':'admin'
+    },{
+        'id':2,
+        'name':'admin2'
+    }];
+    var role = {
+        'id':1,
+        'name':'name1'
+    };
+    var para = {
+        'user':JSON.stringify(user),
+        'role':JSON.stringify(role)
+    }
+    $.ajax({
+        type:'post',
+        url:'/user/test.do',
+        data:JSON.stringify(para),
+        dataType:'json',
+        contentType:'application/json',
+        success:function(){
+            alert("success");
+        }
+    })
+</script>
 </body>
 </html>
