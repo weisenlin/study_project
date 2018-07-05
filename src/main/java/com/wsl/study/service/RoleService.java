@@ -13,4 +13,6 @@ import java.util.List;
 public interface RoleService {
 
     List<Role> findRoleForUser(Long id);
+
+    List<Role> findRole();
 }

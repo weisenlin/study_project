@@ -12,20 +12,26 @@
         var url;
 
         function formatEdit(val, row) {
-            return "<a href=\"javascript:openRoleChooseDialog('" + row.roles + "'," + row.id + ")\"><img style='margin-top: 4px' src='/easy_ui/images/edit.gif' /></a>";
+            var roles = row.roles;
+            var ids = []
+            for (var i = 0; i < roles.length; i++) {
+                    ids.push(roles[i].id);
+            }
+            var role = ids.join(",");
+
+            return "<a href=\"javascript:openRoleChooseDialog( '" + role + "'," + row.id + ")\"><img style='margin-top: 4px' src='/easy_ui/images/edit.gif' /></a>";
         }
 
-        function formatRole(val,row){
-            console.log(row);
+        function formatRole(val, row) {
             var roles = row.roles;
-            if(!roles){
+            if (!roles) {
                 return "";
             }
             var role = "";
-            for(var i=0;i<roles.length;i++){
+            for (var i = 0; i < roles.length; i++) {
                 role = role + roles[i].name + ",";
             }
-            role = role.substring(0,role.length-1);
+            role = role.substring(0, role.length - 1);
             return role;
         }
 
@@ -33,14 +39,20 @@
             var rolesArr = roles.split(",");
             $("#roleSetDialog").dialog("open").dialog("setTitle", "选择角色");
             $("#roleDg").datagrid({
-                url: '/admin/role/listAll',
+                url: '/user/role/list.do',
                 onLoadSuccess: function (data) {
                     var selectedRows = $("#roleDg").datagrid('getRows');
                     for (var i = 0; i < selectedRows.length; i++) {
-                        var name = selectedRows[i].name;
-                        if ($.inArray(name, rolesArr) >= 0) {
-                            $("#roleDg").datagrid('checkRow', i);
+                        var id = selectedRows[i].id;
+                        for(var j=0;j<rolesArr.length;j++){
+                            if(rolesArr[j]==id){
+                                $("#roleDg").datagrid('checkRow', i);
+                                break;
+                            }
                         }
+//                        if ($.inArray(id, rolesArr) >= 0) {
+//                            $("#roleDg").datagrid('checkRow', i);
+//                        }
                     }
                 }
             });
@@ -54,15 +66,30 @@
             for (var i = 0; i < selectedRows.length; i++) {
                 strRoleIds.push(selectedRows[i].id);
             }
-            var roleIds = strRoleIds.join(",");
-            $.post("/admin/user/saveRoleSet", {roleIds: roleIds, userId: userId}, function (result) {
-                if (result.success) {
-                    closeRoleSetDialog();
-                    $("#dg").datagrid("reload");
-                } else {
-                    $.messager.alert("系统提示", "提交失败，请联系管理员！");
+//            var roleIds = strRoleIds.join(",");
+            $.ajax({
+                type:'post',
+                url:'/user/role/set.do',
+                dataType:'json',
+                traditional: true,
+                data: {'uid':userId,'ids':strRoleIds},
+                success:function(result){
+                    if (result.success) {
+                        closeRoleSetDialog();
+                        $("#dg").datagrid("reload");
+                    } else {
+                        $.messager.alert("系统提示", "提交失败，请联系管理员！");
+                    }
                 }
-            }, "json");
+            })
+//            $.post("/user/role/set.do", {rid: strRoleIds, uid: userId}, function (result) {
+//                if (result.success) {
+//                    closeRoleSetDialog();
+//                    $("#dg").datagrid("reload");
+//                } else {
+//                    $.messager.alert("系统提示", "提交失败，请联系管理员！");
+//                }
+//            }, "json");
         }
 
         function closeRoleSetDialog() {
@@ -246,6 +273,5 @@
     <a href="javascript:saveRoleSet()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
     <a href="javascript:closeRoleSetDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
-
 </body>
 </html>

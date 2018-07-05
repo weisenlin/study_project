@@ -1,0 +1,69 @@
+spring mvc学习笔记：
+
+//==============ajax参数传递spring mvc后端接收=============================
+        spring mvc参数接收：
+            接收数组的方式：
+                当前端传递给后台的数据是数组的时候应该如何接收封装呢？
+                刚开始尝试通过设置contentType为‘application/json‘  参数通过JSON.stringify(json)方法想后端传递json参数，后端试图通过@RequestBody Long[] ids获取，这个方法行不通
+                请看实例：
+                    前端代码：
+                    $.ajax({
+                            type:'post',
+                            url:'/user/role/set.do',
+                            dataType:'json',
+                            traditional: true,
+                            data: {'uid':userId,'ids':strRoleIds},
+                            success:function(result){
+                                if (result.success) {
+                                    closeRoleSetDialog();
+                                    $("#dg").datagrid("reload");
+                                } else {
+                                    $.messager.alert("系统提示", "提交失败，请联系管理员！");
+                                }
+                            }
+                        })
+                    最终要的是traditional这个参数需要设置为true,这样前端才能将数组strRoleIds封装成后台的Long[] ids 数组
+                    后台代码：
+                        @RequestMapping("/role/set.do")
+                        @ResponseBody
+                        public Map<String, Object> setRoles(Long uid,Long[] ids) {
+                            Map<String, Object> map = new HashMap<>();
+                            Long uid_1 = Long.parseLong(uid.toString());
+                            userService.addRole(uid_1,ids);
+                            map.put("success",true);
+                            return map;
+                        }
+            接收json对象：
+                单个json对象接收
+                前端代码：
+                    <script>
+                            var user = [{
+                                'id':1,
+                                'name':'admin'
+                            },{
+                                'id':2,
+                                'name':'admin2'
+                            }]
+                            $.ajax({
+                                type:'post',
+                                url:'/user/test.do',
+                                data:JSON.stringify(user),
+                                dataType:'json',
+                                contentType:'application/json',
+                                success:function(){
+                                    alert("success");
+                                }
+                            })
+                        </script>
+                  后台代码:
+                      @RequestMapping("/test.do")
+                      @ResponseBody
+                      public Map<String, Object> test(@RequestBody List<User> user) {
+                          Map<String, Object> map = new HashMap<>();
+                          map.put("success",true);
+                          return map;
+                      }
+
+                      总结：前端需要是post请求，contentType需要设置为application/json json对象数组需要通过JSON.stringify()方法处理
+                      前端需要通过@RequestBody注解接收参数并封装到对象中
+//===============================================================================================================================

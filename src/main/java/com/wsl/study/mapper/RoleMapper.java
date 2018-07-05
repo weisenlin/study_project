@@ -19,4 +19,6 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     List<Role> selectRoleForUser(@Param("id")Long id);
+
+    List<Role> selectAllRole();
 }

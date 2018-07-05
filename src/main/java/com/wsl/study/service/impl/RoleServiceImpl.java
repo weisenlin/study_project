@@ -24,4 +24,9 @@ public class RoleServiceImpl implements RoleService{
     public List<Role> findRoleForUser(Long id) {
         return roleMapper.selectRoleForUser(id);
     }
+
+    @Override
+    public List<Role> findRole() {
+        return roleMapper.selectAllRole();
+    }
 }

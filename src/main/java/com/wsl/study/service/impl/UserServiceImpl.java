@@ -1,6 +1,7 @@
 package com.wsl.study.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.wsl.study.mapper.RoleMapper;
 import com.wsl.study.mapper.UserMapper;
 import com.wsl.study.model.User;
 import com.wsl.study.service.UserService;
@@ -21,6 +22,9 @@ public class UserServiceImpl implements UserService{
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private RoleMapper roleMapper;
 
     @Override
     public User getUserByName(String name) {
@@ -52,5 +56,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public int delete(Long id) {
         return userMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void addRole(Long uid, Long[] rid) {
+        //删除原来的角色数据
+        userMapper.deleteRole(uid);
+        if(rid!=null && rid.length>0){
+            for(Long id:rid){
+                userMapper.insertRole(uid,id);
+            }
+        }
+
     }
 }

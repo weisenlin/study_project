@@ -25,4 +25,8 @@ public interface UserMapper {
     int findCount();
 
     List<User> findAllForPage(@Param("userName")String userName);
+
+    int deleteRole(@Param("uid")Long uid);
+
+    int insertRole(@Param("uid")Long uid,@Param("rid")Long rid);
 }

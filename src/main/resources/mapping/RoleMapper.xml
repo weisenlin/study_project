@@ -80,4 +80,8 @@ LEFT JOIN u_user ON u_user_role.uid = u_user.id
 WHERE
 	u_user.id = #{id}
   </select>
+    
+    <select id="selectAllRole" resultMap="BaseResultMap">
+        select * from u_role order by u_role.id asc
+    </select>
 </mapper>

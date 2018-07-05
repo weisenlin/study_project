@@ -168,6 +168,7 @@
     <if test="userName !=null">
       where u_user.nickname like '%${userName}%'
     </if>
+    order by u_user.id asc
   </select>
 
 
@@ -177,4 +178,12 @@
     FROM
     u_user
   </select>
+  
+  <delete id="deleteRole">
+    delete from u_user_role where u_user_role.uid=#{uid}
+  </delete>
+
+  <insert id="insertRole">
+    INSERT INTO U_USER_ROLE (UID,RID) VALUES (#{uid},#{rid})
+  </insert>
 </mapper>
