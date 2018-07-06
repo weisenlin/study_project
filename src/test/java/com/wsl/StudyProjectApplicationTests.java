@@ -2,6 +2,7 @@ package com.wsl;
 
 import com.wsl.study.mapper.SurveyEntityMapper;
 import com.wsl.study.model.SurveyEntity;
+import com.wsl.study.service.MailService;
 import com.wsl.study.service.ProjectService;
 import com.wsl.study.service.UserService;
 import org.junit.Test;
@@ -20,6 +21,11 @@ public class StudyProjectApplicationTests {
 
 	@Autowired
 	private SurveyEntityMapper surveyEntityMapper;
+
+	@Autowired
+	private MailService mailService;
+
+	private String to = "3345.love@163.com";
 
 	@Test
 	public void contextLoads() {
@@ -40,5 +46,10 @@ public class StudyProjectApplicationTests {
 		SurveyEntity surveyEntity = new SurveyEntity();
 		surveyEntity.setTitle("测试");
 		surveyEntityMapper.insertSelective(surveyEntity);
+	}
+
+	@Test
+	public void testMail(){
+		mailService.sendSimpleMail(to, "主题：简单邮件", "测试邮件内容");
 	}
 }

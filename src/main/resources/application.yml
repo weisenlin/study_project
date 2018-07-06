@@ -19,6 +19,7 @@ server:
 spring:
   profiles: dev
 
+
   datasource:
     url: jdbc:mysql://localhost:3306/study_project?useOldAliasMetadataBehavior\=true&useSSL=false
     username: root
@@ -43,6 +44,17 @@ spring:
     request-context-attribute: request
   resources:
     static-locations: classpath:/static/
+  mail:
+    host: smtp.exmail.qq.com
+    username: 1209867203@qq.com
+    password: aqyfybfyqxhojege
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+              enable: true
+              required: true
 
 pagehelper:
   helper-dialect: mysql
