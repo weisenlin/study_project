@@ -1,0 +1,85 @@
+//整合ssm框架过程中遇到的问题
+    1.整合spring mvc 测试controller的过程中发现无法返回json  例如返回一个List或者Map对象
+            解决方法：推翻原有的maven依赖，重新添加maven如下所示
+
+            统一spring的版本
+            <properties>
+                <!-- spring版本号 -->
+                <spring.version>4.0.2.RELEASE</spring.version>
+                <!-- mybatis版本号 -->
+                <mybatis.version>3.2.6</mybatis.version>
+                <!-- log4j日志文件管理包版本 -->
+                <slf4j.version>1.7.7</slf4j.version>
+                <log4j.version>1.2.17</log4j.version>
+             </properties>
+              <!-- spring核心包 -->
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-core</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-web</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-oxm</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-tx</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-jdbc</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-webmvc</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-aop</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-context-support</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+
+                 <dependency>
+                   <groupId>org.springframework</groupId>
+                   <artifactId>spring-test</artifactId>
+                   <version>${spring.version}</version>
+                 </dependency>
+
+
+                <!--json添加该依赖返回json数据不报错-->
+                <dependency>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-mapper-asl</artifactId>
+                    <version>1.9.9</version>
+                </dependency>
+
+     2. 项目无法启动,总是使用未指定的配置文件
+        解决办法：web.xml中的配置错误 contextConfigLocation  拼写错误导致只想缺省值
+                <servlet>
+                    <servlet-name>spring-mvc</servlet-name>
+                    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+                    <init-param>
+                      <param-name>contextConfigLocation</param-name>
+                      <param-value>classpath*:spring*.xml</param-value>
+                    </init-param>
+                    <load-on-startup>1</load-on-startup>
+                  </servlet>
