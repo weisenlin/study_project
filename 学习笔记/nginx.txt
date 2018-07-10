@@ -1,0 +1,194 @@
+windows 下nginx反向代理配置
+            1.下载nginx安装到任意目录
+            2.cmd进入改目录
+            nginx.conf实例如下：
+                    ===========================================
+#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    #include       mime.types;
+    #default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+	proxy_buffering off;
+
+	upstream tomcat_server{
+		ip_hash;
+		server 127.0.0.1:8888 weight=1;
+		server 172.16.60.88:8080 weight=2;
+	}
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            proxy_pass  http://tomcat_server/NstWebProject/;
+			#proxy_http_version 1.1;
+        }
+        #根据经验,在本人这种配置下，只有加入这条配置才能反向代理成功  也就是js  css 图片  验证码  其他url才能显示出来
+		 location ~ .*\.(js|css|png|gif|jepg|jpg|do|ttf|woff)$ {
+             proxy_pass http://tomcat_server;
+         }
+
+
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ .*\.(js|css)$ {
+            #proxy_pass   http://172.16.60.88:8080/NstWebProject/;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+    #
+    #server {
+    #    listen       443 ssl;
+    #    server_name  localhost;
+
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+}
+
+===============================================以上是nginx.conf的配置实例==================
+主要是配置  upstream tomcat_server{}
+            以及server{}
+            在server下配置location / {}反向代理重定向到任意路径
+
+
+            相关网址：https://blog.csdn.net/kepoon/article/details/73253059     js  css img
+                    相关命令网址   linux  http://www.runoob.com/linux/nginx-install-setup.html
+                                    windows  https://www.cnblogs.com/jiangwangxiang/p/8481661.html
+
+
+
+ =================================================
+ 未解决问题:验证码第二次调用的时候有些出现，有些不出现  异常提醒是jdk版本问题   jdk1.7会出现这个问题
+
+ 解决办法：jdk  1.8
+ 或者：修改验证码的显示代码为  主要是修改输出方式
+
+ /**
+     * 输出一张图形验证码
+     */
+    @RequestMapping(value = "/register/captcha.do", method = RequestMethod.GET)
+    public void loginVerificationCode(HttpServletResponse response, HttpSession session) throws IOException {
+        CaptchaValue captcha = new Captcha(96, 32, 4).create();
+
+        // 禁止图像缓存
+        response.setHeader("Cache-Control", "no-store");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        // 将图像输出到Servlet输出流中
+        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(response.getOutputStream());
+        encoder.encode(captcha.getImage());
+        session.setAttribute(SessionKey.REGISTER_CAPTCHA_CODE, captcha.getCode());
+    }
+
+/**
+     * 输出一张图形验证码
+     */
+    @RequestMapping(value = "/login/captcha.do", method = RequestMethod.GET)
+    public void loginVerificationCode(HttpServletResponse response, HttpSession session) throws IOException {
+        CaptchaValue captcha = new Captcha(96, 32, 4).create();
+
+        // 禁止图像缓存
+        response.setHeader("Cache-Control", "no-store");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        // 将图像输出到Servlet输出流中
+        try (ServletOutputStream sos = response.getOutputStream()) {
+            ImageIO.write(captcha.getImage(), "jpeg", sos);
+            session.setAttribute(SessionKey.LOGIN_CAPTCHA_CODE, captcha.getCode());
+        }
+    }
+
+    当有两个地方需要出现验证码的时候，可以选择两种方式，或者直接使用jdk1.8
+
+
+    ==================================验证码与nginx的问题==============================
+
