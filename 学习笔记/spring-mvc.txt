@@ -97,3 +97,76 @@
               </includes>
             </resource>
           </resources>
+
+
+
+
+          ============================
+          spring mvc 异步请求：另外启动一个线程去处理，当前异步请求直接返回提示信息'后台正在处理'，同时发起请求查询结果如果结果为未完成，递归调用，完成的时候直接return;
+                    思路：线程开启后首先向redis存储一个以当前用户id为key的值，证明当前线程正在运行
+
+                    helloworld: https://www.jianshu.com/p/15aa3cd1a622
+
+                    第一步：让在web.xml中配置的servelet和filter都支持异步调用。
+                        <async-supported>true</async-supported>
+
+                        <servlet>
+                          <description>spring mvc servlet</description>
+                          <servlet-name>springMvc</servlet-name>
+                          <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+                            <init-param>
+                              <description>spring mvc 配置文件</description>
+                              <param-name>contextConfigLocation</param-name>
+                              <param-value>classpath:spring-mvc.xml</param-value>
+                            </init-param>
+                          <load-on-startup>1</load-on-startup>
+                          <async-supported>true</async-supported>
+                        </servlet>
+
+                        第二步：异步调用注解支持
+                        在Spring配置中加上对异步调用注解的支持。
+                        <!-- 支持异步方法执行 -->
+                        <task:executor id="myexecutor" pool-size="5"  />
+                        <task:annotation-driven executor="myexecutor"/>
+
+                        第三步：创建异步调用类和方法
+                        这里模拟异步发邮件，所以就创建异步发送邮件类。
+
+                        把邮件发送类注册成bean，加上@Service即可。
+                        在该类上加上@EnableAsync，表示该类支持异步调用。
+                        在对应异步方法上加上@Async注解。
+
+
+                        @Controller
+                        @RequestMapping("/asyncController")
+                        public class AsyncController extends BaseController {
+
+                            //注入邮件类
+                            @Autowired
+                            private SendMailUtil sendMailUtil;
+
+                            //注入其他服务类
+                            @Autowired
+                            private OtherService otherService;
+
+                            @RequestMapping(params = "async")
+                            @ResponseBody
+                            public Json async(HttpServletRequest request) {
+                                Json j = new Json();
+                                Other other = OtherService.other();
+                                if (other != null) {
+                                    j.setObj(other);
+                                    j.setSuccess(true);
+                                    //异步发送邮件
+                                    sendMailUtil.SEND_SUBMIT_EMAIL("-----------", "-----------");
+                                    System.out.println("Execute before sending mail！");
+                                    //在邮件发送之前就返回了
+                                    return j;
+                                }
+                            }
+                        }
+
+     =================================================================================
+     spring boot 只需要在启动类上添加注解@EnableAsync
+
+     异步方法中添加注解@Async就可以实现异步调用

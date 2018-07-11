@@ -175,7 +175,14 @@
                 "userName": $("#s_userName").val()
             });
         }
-
+        function testAys(){
+            $.ajax({
+                url:'/test//asyn.do',
+                success:function(){
+                    $.messager.alert("提示","正在请求");
+                }
+            })
+        }
 
         $(function () {
 
@@ -216,6 +223,7 @@
         <a href="javascript:openUserAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
         <a href="javascript:openUserModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
         <a href="javascript:deleteUser()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        <a href="javascript:testAys()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">测试</a>
     </div>
     <div>
         &nbsp;用户名：&nbsp;<input type="text" id="s_userName" size="20" onkeydown="if(event.keyCode==13) searchUser()"/>
