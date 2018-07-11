@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
  */
 @Service
 @Transactional
-public class AysncService implements AysncServcie {
+public class AysncServiceImpl implements AysncServcie {
 
     @Override
     @Async

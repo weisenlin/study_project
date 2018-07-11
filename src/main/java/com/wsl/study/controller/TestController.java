@@ -1,12 +1,12 @@
 package com.wsl.study.controller;
 
-import com.wsl.study.model.JsonResult;
 import com.wsl.study.service.AysncServcie;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.concurrent.Future;
 
 /**
  * create by WSL_SILVA
@@ -22,12 +22,14 @@ public class TestController {
 
     @RequestMapping("/asyn.do")
     @ResponseBody
-    public JsonResult testAsyn(){
+    public Future<String> testAsyn(){
+        Future<String> future = null;
         try {
-            aysncServcie.runLoading();
+            future =  aysncServcie.runLoading();
+            return future;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return JsonResult.ok();
+        return future;
     }
 }
