@@ -82,3 +82,29 @@
                             //do nothing.
                         }
                     };
+
+
+     =================================================================================
+     //通过长连接向请求返回数据  先获取存储的长连接  向响应体中写入数据
+     synchronized (ctx) { //使用ctx对象需要同步，防止同投递线程冲突。
+                 if (!clients.remove(address, ctx)) {
+                     //如果移除监听失败，说明已被其他线程使用后移除，投递失败
+                     return;
+                 }
+                 try {
+                     ResponseBody<List<TextMessage>> responseBody = new ResponseBody<>(ResponseBody.State.SUCCESS);
+                     responseBody.setData(TextMessage.toTextMessage(messages));
+                     HttpServletResponse response = (HttpServletResponse) ctx.getResponse();
+                     response.getWriter().write(objectMapper.writeValueAsString(responseBody));
+                     response.setCharacterEncoding("UTF-8");
+                     response.setHeader("content-type", "application/json");
+                     //发送响应
+                     response.getWriter().flush();
+                 } catch (IOException e) {
+                     //写入响应流错误，投递失败。
+                     logger.error("地址为" + address + "的消息投递时写入响应流错误，投递失败", e);
+                 } finally {
+                     //结束长连接
+                     ctx.complete();
+                 }
+             }
