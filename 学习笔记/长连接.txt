@@ -1,0 +1,84 @@
+通过长连接设计消息架构
+                // 获取异步上下文对象  该对象就是一个长连接,只要该长连接没有超时，就可以获取response，向发起长连接的请求返回数据
+                AsyncContext ctx = request.startAsync();
+                // 设置长连接十分钟超时
+                ctx.setTimeout(TimeUnit.MINUTES.toMillis(10));
+                // 添加事件监听对象
+                ctx.addListener(asyncListener);
+
+
+                //长连接监听
+                //全局维护一个单例的前端连接器   该连接器其实就相当于一个集合  继承类ConcurrentHashMap
+                //该连接用于存储长连接,当mq接收到消息的时候，在集合中查找当前是否存在监听
+                    //当前用户的id就是一个唯一的监听地址  以当前地址为key查找是否存在长连接保存就可以知道是否存在监听
+                //代码实例  通过单例模式设计该类
+
+                import javax.servlet.AsyncContext;
+                import java.util.concurrent.ConcurrentHashMap;
+
+                /**
+                 * description: 消息在线客户端（前端连接）集合
+                 *
+                 *
+                 *
+                 **/
+                public class MessageClients extends ConcurrentHashMap<String, AsyncContext> {
+                    private static final long serialVersionUID = 6101408943720761839L;
+
+                    //私有的构造器
+                    private MessageClients() {
+
+                    }
+
+                    private static volatile MessageClients clients;
+
+                    public static MessageClients instance() {
+                        if (clients == null) {
+                            //同步
+                            synchronized (MessageClients.class) {
+                                if (clients == null) {
+                                    clients = new MessageClients();
+                                }
+                            }
+                        }
+                        return clients;
+                    }
+
+                    @Override
+                    public AsyncContext put(String address, AsyncContext ctx) {
+                        //当保存监听的时候，将监听地址保存为长连接的参数，然后将长连接存储在单例的集合中
+                        ctx.getRequest().setAttribute("address", address);
+                        return super.put(address, ctx);
+                    }
+
+                    @Override
+                    public boolean remove(Object key, Object value) {
+                        return super.remove(key, value);
+                    }
+                }
+=======================================================================
+                private AsyncListener asyncListener = new AsyncListener() { //异步事件监听对象。
+                        public void onComplete(AsyncEvent e) throws IOException {
+                //            String address = (String) e.getAsyncContext().getRequest().getAttribute("address");
+                //            if (!StringUtils.isBlank(address))
+                //                clients.remove(address);
+                        }
+
+                        public void onError(AsyncEvent e) throws IOException {
+                            String address = (String) e.getAsyncContext().getRequest().getAttribute("address");
+                            if (!StringUtils.isBlank(address))
+                                clients.remove(address);
+                        }
+
+
+                        public void onTimeout(AsyncEvent e) throws IOException {
+                            //超时的时候，将该长连接从单例中删除，否则长连接将无法返回数据，必须在前端重新发起连接
+                            String address = (String) e.getAsyncContext().getRequest().getAttribute("address");
+                            if (!StringUtils.isBlank(address))
+                                clients.remove(address);
+                        }
+
+                        public void onStartAsync(AsyncEvent e) throws IOException {
+                            //do nothing.
+                        }
+                    };
