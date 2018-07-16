@@ -1,0 +1,105 @@
+基于注解的切面编程  首先通过注解定义切入点   注解详解：https://blog.csdn.net/sunlihuo/article/details/52701548
+自定义注解：
+        代码实例：
+                通过@Retention自定义注解
+                通过@Target定义该注解是方法级别还是类级别
+                @Retention(RetentionPolicy.RUNTIME)
+                @Target({ElementType.METHOD, ElementType.TYPE})
+                public @interface Authorize {
+
+                    /**
+                     * 注解属性
+                     */
+                    String module() default "";
+
+
+                    String operation();
+
+
+                    CheckMode checkMode() default CheckMode.NORMAL;
+
+                    /**
+                        枚举
+                    **
+                    /
+                    enum CheckMode {
+
+                        NORMAL,
+
+                        SPELL
+                    }
+
+                }
+
+    定义切面拦截切入点方法:
+        将切面交给spring管理@Controller
+        @Aspect注解可以定义一个切面
+
+        @annotation标志符会检查系统中所有对象的所有方法级别Joinpoint
+        @within：用于匹配所以持有指定注解类型内的方法；
+        @annotation：用于匹配当前执行方法持有指定注解的方法；
+        通过ProceedingJoinPoint获得注解对象，获取注解中的数据
+                MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+
+                1.joinpoint.getargs():获取带参方法的参数
+
+                2.joinpoint.getTarget():.获取他们的目标对象信息
+
+                3..joinpoint.getSignature():(signature是信号,标识的意思):获取被增强的方法相关信息
+
+
+                    // 类级别的授权注解
+                    Authorize authorizeType = (Authorize) methodSignature.getDeclaringType().getAnnotation(Authorize.class);
+                    // 方法级别的授权注解
+                    Authorize authorizeMethod = methodSignature.getMethod().getAnnotation(Authorize.class);
+                获取到注解对象后，就可以通过注解对象获取注解中的属性值
+                String module = authorize.module();
+                String operation = authorize.operation();
+                Authorize.CheckMode checkMode = authorize.checkMode();
+
+            @Controller
+            @Aspect
+            public class AuthorizeAspect {
+                @Pointcut("@annotation(com.fc.bgpt.common.web.aspect.annotation.Authorize)")
+                private void methodInvocation() {
+                }
+                @Pointcut("@within(com.fc.bgpt.common.web.aspect.annotation.Authorize)")
+                private void typeInvocation() {
+                }
+                @Around("methodInvocation() || typeInvocation()")
+                public Object aroundController(ProceedingJoinPoint joinPoint) throws Throwable {
+                    ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                    HttpServletRequest request = requestAttributes.getRequest();
+                    HttpSession session = request.getSession();
+                    User user = (User) session.getAttribute(SessionKey.USER);
+                    // 用户未登录，返回未授权
+                    if (user == null) {
+                        throw new ApiAccessDeniedException();
+                    }
+
+                    MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+                    // 类级别的授权注解
+                    Authorize authorizeType = (Authorize) methodSignature.getDeclaringType().getAnnotation(Authorize.class);
+                    // 方法级别的授权注解
+                    Authorize authorizeMethod = methodSignature.getMethod().getAnnotation(Authorize.class);
+
+                    // 没有Authorize注解，放行
+                    if (authorizeMethod == null && authorizeType == null) {
+                        return joinPoint.proceed();
+                    }
+
+                    List<Operation> operations = user.getOperations();
+                    // 该用户完全没有权限，不用判断了直接返回未授权
+                    if (operations == null || operations.size() <= 0) {
+                        throw new ApiAccessDeniedException();
+                    }
+
+                    // 如果类级别的模块操作和方法级别的模块操作都有有访问权限则放行
+                    if (canAccess(authorizeType, operations, request) && canAccess(authorizeMethod, operations, request)) {
+                        return joinPoint.proceed();
+                    }
+
+                    // 到这说明用户没有权限，返回未授权
+                    throw new ApiAccessDeniedException();
+                }
+             }
