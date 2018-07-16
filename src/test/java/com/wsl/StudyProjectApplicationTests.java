@@ -9,6 +9,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -24,6 +28,9 @@ public class StudyProjectApplicationTests {
 
 	@Autowired
 	private MailService mailService;
+
+	@Autowired
+	private RedisTemplate redisTemplate;
 
 	private String to = "3345.love@163.com";
 
@@ -51,5 +58,20 @@ public class StudyProjectApplicationTests {
 	@Test
 	public void testMail(){
 		mailService.sendSimpleMail(to, "主题：简单邮件", "测试邮件内容");
+	}
+
+
+	@Test
+	public void testRedis(){
+		HashOperations<String,String,String> hashOperations = redisTemplate.opsForHash();
+//		hashOperations.put("test","test_1","测试信息");
+//
+//		System.out.println(hashOperations.get("test","test_1"));
+
+		ValueOperations valueOperations = redisTemplate.opsForValue();
+		ListOperations listOperations = redisTemplate.opsForList();
+		listOperations.leftPush("test_push","测试push");
+//		System.out.println(listOperations.rightPop("test_push"));
+//		System.out.println(listOperations.rightPop("test_push"));
 	}
 }
