@@ -1,0 +1,14 @@
+es集群配置：
+
+
+
+cluster.name: my-esLearn
+node.name: node-1
+network.host: 172.16.60.50
+http.port: 9200
+transport.tcp.port: 9300
+#设置集群自动发现机器ip集合
+discovery.zen.ping.unicast.hosts: ["172.16.60.50:9300"]
+
+
+每一个es都按照以上的配置，修改节点的ip或者端口号即可

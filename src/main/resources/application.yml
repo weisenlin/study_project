@@ -66,6 +66,13 @@ spring:
         max-idle: 8
         min-idle: 0
     password:
+    #配置es
+  data:
+    elasticsearch:
+      cluster-name: my-esLearn
+      cluster-nodes: 172.16.60.50:9300
+      repositories:
+        enabled: true
 
 
 

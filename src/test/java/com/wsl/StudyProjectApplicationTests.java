@@ -2,6 +2,7 @@ package com.wsl;
 
 import com.wsl.study.mapper.SurveyEntityMapper;
 import com.wsl.study.model.SurveyEntity;
+import com.wsl.study.model.User;
 import com.wsl.study.service.MailService;
 import com.wsl.study.service.ProjectService;
 import com.wsl.study.service.UserService;
@@ -73,5 +74,15 @@ public class StudyProjectApplicationTests {
 		listOperations.leftPush("test_push","测试push");
 //		System.out.println(listOperations.rightPop("test_push"));
 //		System.out.println(listOperations.rightPop("test_push"));
+	}
+
+	@Test
+	public void testEs(){
+		userSerivce.testEs();
+	}
+
+	@Test
+	public void testEsSearch(){
+		User user = userSerivce.searchFromEs();
 	}
 }

@@ -1,10 +1,12 @@
 package com.wsl.study.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.wsl.study.dao.UserRepository;
 import com.wsl.study.mapper.RoleMapper;
 import com.wsl.study.mapper.UserMapper;
 import com.wsl.study.model.User;
 import com.wsl.study.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService{
 
     @Resource
     private RoleMapper roleMapper;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public User getUserByName(String name) {
@@ -68,5 +73,20 @@ public class UserServiceImpl implements UserService{
             }
         }
 
+    }
+
+    @Override
+    public void testEs() {
+        List<User> users = userMapper.findAll(null);
+        userRepository.saveAll(users);
+    }
+
+    @Override
+    public User searchFromEs() {
+        List<User> users = userMapper.findAll(null);
+        for(User user:users){
+            return userRepository.queryUserById(user.getId());
+        }
+        return null;
     }
 }

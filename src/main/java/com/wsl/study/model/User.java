@@ -1,8 +1,11 @@
 package com.wsl.study.model;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.util.Date;
 import java.util.List;
 
+@Document(indexName = "study_project",type="u_user", shards = 1,replicas = 0, refreshInterval = "-1")
 public class User {
     private Long id;
 

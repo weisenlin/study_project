@@ -24,4 +24,8 @@ public interface UserService {
     int delete(Long id);
 
     void addRole(Long uid,Long[] rid);
+
+    void testEs();
+
+    User searchFromEs();
 }
