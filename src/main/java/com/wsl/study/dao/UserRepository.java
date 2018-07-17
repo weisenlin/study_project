@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * create by WSL_SILVA
  * 日期: 2018/7/17 0017
- * 用途：
+ * 用途：es操作dao
  * 描述:
  */
 @Component
