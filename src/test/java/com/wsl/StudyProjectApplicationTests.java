@@ -100,6 +100,7 @@ public class StudyProjectApplicationTests {
         //通过topic模式发送消息  订阅了该topic的客户都会收到
 
         Destination destination = new ActiveMQTopic(QueueConstant.queueName);
+//        Destination destination = new ActiveMQQueue(QueueConstant.queueName);
         for (int i = 0; i < 2; i++) {
             producer.sendMessage(destination, "myname is wsl!!!");
         }

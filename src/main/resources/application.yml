@@ -10,7 +10,7 @@ mybatis:
   #configuration:
     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 9999
+  port: 8080
 
 
 ---
@@ -30,7 +30,7 @@ spring:
   devtools:
     restart:
       additional-paths: src/main/java
-      enabled: true
+      enabled: false
   #freemarker热部署配置
   freemarker:
     cache: false
