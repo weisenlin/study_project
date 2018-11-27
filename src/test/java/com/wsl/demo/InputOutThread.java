@@ -3,7 +3,7 @@ package com.wsl.demo;
 /**
  * create by WSL_SILVA
  * 日期: 2018/11/27 0027
- * 用途：  wait  notify的使用
+ * 用途：  wait  notify的使用  线程等待  线程唤醒  达到线程安全
  * 描述:
  */
 class Res {
